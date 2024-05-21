@@ -1,0 +1,24 @@
+# Configuraci�n del servidor
+server:
+  port: 8081
+  error:
+    include-message: always
+
+# Configuraci�n de Spring
+spring:
+  # Configuraci�n de migraci�n de base de datos con Flyway
+  flyway:
+    enabled: true
+    baselineVersion: 1
+    locations:
+      classpath: db/migration
+    sqlMigrationSuffixes: .sql
+    baselineOnMigrate: true
+    sqlMigrationPrefix: V
+    schemas: public
+
+  datasource:
+    url: jdbc:postgresql://bubble.db.elephantsql.com:5432/wwedifvr?socketTimeout=3
+    username: wwedifvr
+    password: 5umbQKdndIK_XCf_sjoYDmr6YdbbYsAj
+    driverClassName: org.postgresql.Driver
