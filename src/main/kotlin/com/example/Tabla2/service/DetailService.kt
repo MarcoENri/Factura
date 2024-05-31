@@ -44,4 +44,5 @@ class DetailService {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
     }
+
 }

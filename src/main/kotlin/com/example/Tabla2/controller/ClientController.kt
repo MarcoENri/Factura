@@ -32,5 +32,4 @@ class ClientController {
     fun patch(@RequestBody client: Client): ResponseEntity<Client>{
         return ResponseEntity(clientService.updateName(client), HttpStatus.OK)
     }
-
 }

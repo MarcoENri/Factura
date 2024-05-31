@@ -20,7 +20,6 @@ class DetailController {
 
     @PostMapping
     fun save(@RequestBody detail: Detail): ResponseEntity<Detail> {
-        // Validar que la entidad Detail no sea nula y contenga datos válidos
         if (detail.id != null) {
             return ResponseEntity.badRequest().build()
         }
