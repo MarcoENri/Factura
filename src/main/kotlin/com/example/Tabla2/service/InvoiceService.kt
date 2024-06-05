@@ -1,7 +1,9 @@
 package com.example.Tabla2.service
 
 import com.example.Tabla2.entity.Invoice
+import com.example.Tabla2.entity.InvoiceView
 import com.example.Tabla2.repository.InvoiceRepository
+import com.example.Tabla2.repository.InvoiceViewRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -11,10 +13,21 @@ import org.springframework.web.server.ResponseStatusException
 class InvoiceService {
 
     @Autowired
+    lateinit var invoiceViewRepository: InvoiceViewRepository
+
+    @Autowired
     lateinit var invoiceRepository: InvoiceRepository
 
     fun list(): List<Invoice> {
         return invoiceRepository.findAll()
+    }
+
+    fun listView(): List<InvoiceView> {
+        return invoiceViewRepository.findAll()
+    }
+
+    fun getTotal(value:Double): List<Invoice> {
+        return invoiceRepository.findTotal(value)
     }
 
     fun save(invoice: Invoice): Invoice {
@@ -42,5 +55,6 @@ class InvoiceService {
         } catch (ex: Exception) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
+
     }
 }
