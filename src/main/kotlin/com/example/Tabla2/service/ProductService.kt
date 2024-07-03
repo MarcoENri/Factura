@@ -18,13 +18,19 @@ class ProductService {
     }
 
     fun save(product: Product): Product {
+        if (!isValidStock(product.stock)) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Stock")
+        }
         return productRepository.save(product)
     }
 
     fun update(product: Product): Product {
         try {
             productRepository.findById(product.id)
-                ?: throw Exception("Ya existe el id")
+                ?: throw Exception("Product ID does not exist")
+            if (!isValidStock(product.stock)) {
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Stock")
+            }
             return productRepository.save(product)
         } catch (ex: Exception) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
@@ -33,19 +39,21 @@ class ProductService {
 
     fun updateName(product: Product): Product? {
         try {
-            var response = productRepository.findById(product.id)
-                ?: throw Exception("Ya existe el id")
+            val response = productRepository.findById(product.id)
+                ?: throw Exception("Product ID does not exist")
             response.apply {
-                description= product.description
+                description = product.description
+            }
+            if (!isValidStock(response.stock)) {
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Stock")
             }
             return productRepository.save(response)
         } catch (ex: Exception) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
-
     }
 
+    fun isValidStock(stock: Long?): Boolean {
+        return stock != null && stock > 0
+    }
 }
-
-
-

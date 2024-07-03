@@ -26,35 +26,47 @@ class InvoiceService {
         return invoiceViewRepository.findAll()
     }
 
-    fun getTotal(value:Double): List<Invoice> {
+    fun getTotal(value: Double): List<Invoice> {
         return invoiceRepository.findTotal(value)
     }
 
     fun save(invoice: Invoice): Invoice {
+        if (!isValidInvoiceCode(invoice.code)) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Invoice Code")
+        }
         return invoiceRepository.save(invoice)
     }
 
     fun update(invoice: Invoice): Invoice {
         try {
             invoiceRepository.findById(invoice.id)
-                ?: throw Exception("Ya existe el id")
+                ?: throw Exception("Invoice ID does not exist")
+            if (!isValidInvoiceCode(invoice.code)) {
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Invoice Code")
+            }
             return invoiceRepository.save(invoice)
         } catch (ex: Exception) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND,ex.message)
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
     }
 
     fun updateName(invoice: Invoice): Invoice? {
         try {
-            var response = invoiceRepository.findById(invoice.id)
-                ?: throw Exception("Ya existe el id")
+            val response = invoiceRepository.findById(invoice.id)
+                ?: throw Exception("Invoice ID does not exist")
             response.apply {
-                code= invoice.code
+                code = invoice.code
+            }
+            if (!isValidInvoiceCode(response.code)) {
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Invoice Code")
             }
             return invoiceRepository.save(response)
         } catch (ex: Exception) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
         }
+    }
 
+    fun isValidInvoiceCode(code: String?): Boolean {
+        return code != null && code.matches(Regex("\\d{3}-\\d{3}-\\d{9}"))
     }
 }
