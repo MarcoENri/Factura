@@ -8,7 +8,7 @@ locked BOOLEAN,
 disabled BOOLEAN
 );
 
-CREATE TABLE IF NOT EXISTS roles (
+CREATE TABLE IF NOT EXISTS roles   (
 id SERIAL PRIMARY KEY,
 roles VARCHAR(25),
 user_id INT,

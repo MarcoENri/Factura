@@ -29,7 +29,7 @@ class SecurityConfig {
             .authorizeHttpRequests { authRequest ->
                 authRequest
                     .requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("/client/**").hasAnyRole("admin","ventas")
+                    .requestMatchers("/client/**").hasAnyRole("admin","sales")
                     .requestMatchers(HttpMethod.GET,"/product/**").hasAnyRole("admin")
 
                     .anyRequest().denyAll()

@@ -1,0 +1,6 @@
+{   "id":1,
+  "description": "Laptop",
+  "brand": "ExampleBrand",
+  "price": 999.99,
+  "stock": 10
+}
